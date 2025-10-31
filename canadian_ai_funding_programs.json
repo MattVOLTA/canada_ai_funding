@@ -1,0 +1,1710 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "last_updated": "2025-10-30",
+    "schema_version": "enhanced_with_data_requirements",
+    "description": "Enhanced decision-support dataset with structured data requirements for matching Canadian SMEs to AI funding programs",
+    "changelog": {
+      "2.0": "Added data_requirements section with mandatory/optional fields, documents, validation rules, and collection guidance",
+      "1.0": "Initial release with basic program information and qualification logic"
+    }
+  },
+
+  "universal_fields": {
+    "description": "Fields that are commonly used across multiple programs",
+    "fields": {
+      "business_structure": {
+        "field_id": "business_structure",
+        "field_name": "Business Structure",
+        "data_type": "enum",
+        "allowed_values": [
+          "for_profit_incorporated",
+          "for_profit_sole_proprietor",
+          "non_profit_organization",
+          "indigenous_owned_business",
+          "post_secondary_institution",
+          "research_organization"
+        ],
+        "question_text": "What is your business structure?",
+        "help_text": "Select the legal structure that best describes your organization"
+      },
+      "employee_count": {
+        "field_id": "employee_count",
+        "field_name": "Number of Employees",
+        "data_type": "integer",
+        "question_text": "How many full-time equivalent (FTE) employees does your organization have?",
+        "help_text": "Include all full-time, part-time (converted to FTE), and contract employees. Include affiliated companies if applicable."
+      },
+      "annual_revenue": {
+        "field_id": "annual_revenue",
+        "field_name": "Annual Revenue",
+        "data_type": "decimal",
+        "question_text": "What was your annual revenue in the most recent fiscal year (CAD)?",
+        "help_text": "Enter 0 if pre-revenue. Use your most recent completed fiscal year.",
+        "allow_zero": true
+      },
+      "years_in_operation": {
+        "field_id": "years_in_operation",
+        "field_name": "Years in Operation",
+        "data_type": "integer",
+        "question_text": "How many years has your organization been operating?",
+        "help_text": "Count from date of incorporation or business registration"
+      },
+      "region": {
+        "field_id": "region",
+        "field_name": "Primary Business Location",
+        "data_type": "enum",
+        "allowed_values": [
+          "Newfoundland and Labrador",
+          "Prince Edward Island",
+          "Nova Scotia",
+          "New Brunswick",
+          "Quebec",
+          "Ontario - Southern",
+          "Ontario - Northern",
+          "Manitoba",
+          "Saskatchewan",
+          "Alberta",
+          "British Columbia",
+          "Yukon",
+          "Northwest Territories",
+          "Nunavut"
+        ],
+        "question_text": "Where is your business primarily located?",
+        "help_text": "Select the province or territory where your main operations are based"
+      },
+      "canadian_operations": {
+        "field_id": "canadian_operations",
+        "field_name": "Canadian Operations",
+        "data_type": "boolean",
+        "question_text": "Do you have physical operations and employees based in Canada?",
+        "help_text": "You must have actual Canadian presence (not just incorporation)"
+      },
+      "project_type": {
+        "field_id": "project_type",
+        "field_name": "Type of AI Project",
+        "data_type": "enum",
+        "allowed_values": [
+          "early_stage_rd",
+          "commercializing_ai",
+          "adopting_ai",
+          "compute_resources",
+          "training_employees",
+          "planning_consulting",
+          "generative_ai_deep_learning"
+        ],
+        "display_values": {
+          "early_stage_rd": "Early-stage R&D (developing new AI technology, TRL 1-6)",
+          "commercializing_ai": "Commercializing AI technology (TRL 7-9, ready for market)",
+          "adopting_ai": "Adopting existing AI solutions to transform operations",
+          "compute_resources": "Accessing AI compute resources for training/deployment",
+          "training_employees": "AI training and upskilling employees",
+          "planning_consulting": "Planning/consulting for AI strategy",
+          "generative_ai_deep_learning": "Developing generative AI or deep learning solutions"
+        },
+        "question_text": "What type of AI project are you pursuing?",
+        "help_text": "Choose the option that best describes your primary AI initiative"
+      },
+      "project_cost_estimate": {
+        "field_id": "project_cost_estimate",
+        "field_name": "Estimated Total Project Cost",
+        "data_type": "decimal",
+        "question_text": "What is your estimated total project cost (CAD)?",
+        "help_text": "Include all costs: salaries, software, hardware, consulting, training, etc."
+      },
+      "funding_secured_percentage": {
+        "field_id": "funding_secured_percentage",
+        "field_name": "Percentage of Funding Secured",
+        "data_type": "integer",
+        "question_text": "What percentage of project funding have you already secured from non-government sources?",
+        "help_text": "Include your own cash, investor commitments, bank financing, etc. Do not include government grants."
+      },
+      "project_started": {
+        "field_id": "project_started",
+        "field_name": "Has Project Started?",
+        "data_type": "boolean",
+        "question_text": "Have you already started incurring expenses for this project?",
+        "help_text": "Some programs require application before project start"
+      }
+    }
+  },
+
+  "programs": [
+    {
+      "id": "ca-fed-raii",
+      "name": "Regional Artificial Intelligence Initiative (RAII)",
+      "short_name": "RAII",
+
+      "data_requirements": {
+        "mandatory": [
+          {
+            "field_id": "business_structure",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["for_profit_incorporated", "non_profit_organization", "indigenous_owned_business"]
+            },
+            "application_section": "organization_information",
+            "application_field_name": "Corporate Status",
+            "used_for": ["eligibility", "application_form"],
+            "disqualifies_if": "business_structure == 'for_profit_sole_proprietor'",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "employee_count",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 1,
+              "max": 500
+            },
+            "application_section": "organization_information",
+            "application_field_name": "Employee Count",
+            "used_for": ["eligibility", "application_form"],
+            "disqualifies_if": "employee_count < 1 OR employee_count > 500",
+            "preference_rule": "employee_count <= 499",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "years_in_operation",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 2
+            },
+            "application_section": "organization_information",
+            "application_field_name": "Date of Incorporation (used to calculate years)",
+            "used_for": ["eligibility", "application_form"],
+            "disqualifies_if": "years_in_operation < 2",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "canadian_operations",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "must_be": true
+            },
+            "application_section": "organization_information",
+            "application_field_name": "Mailing address / Operations location",
+            "used_for": ["eligibility"],
+            "disqualifies_if": "canadian_operations == false",
+            "help_text": "Must have staffed operating facilities in the region",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "region",
+            "inherits_from": "universal_fields",
+            "application_section": "organization_information",
+            "application_field_name": "Province of Incorporation / Project Location",
+            "used_for": ["routing", "eligibility"],
+            "determines": "regional_contact",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "project_type",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["commercializing_ai", "adopting_ai"]
+            },
+            "application_section": "project_details",
+            "application_field_name": "Project Description (must indicate Pillar 1 or 2)",
+            "used_for": ["eligibility", "routing"],
+            "disqualifies_if": "project_type NOT IN ['commercializing_ai', 'adopting_ai']",
+            "routes_to_alternative": {
+              "early_stage_rd": "ca-fed-nrc-irap",
+              "planning_consulting": "ca-on-dmap"
+            },
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "project_cost_estimate",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 500000,
+              "max": 10000000
+            },
+            "application_section": "project_costs",
+            "application_field_name": "Total Expenditures",
+            "used_for": ["eligibility", "application_form"],
+            "disqualifies_if": "project_cost_estimate < 500000 OR project_cost_estimate > 10000000",
+            "weight": "mandatory",
+            "explanation": "RAII provides $250K-$5M at 50% coverage, requiring minimum $500K total project cost"
+          },
+          {
+            "field_id": "funding_secured_percentage",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 50,
+              "max": 100
+            },
+            "application_section": "funding_partners",
+            "application_field_name": "Funding Confirmed + Partner Amount",
+            "used_for": ["eligibility", "application_form"],
+            "disqualifies_if": "funding_secured_percentage < 50",
+            "weight": "mandatory",
+            "help_text": "Must have confirmed non-government funding for at least 50% of project costs at EOI submission. Requires proof (bank statements, letters of intent, signed agreements)."
+          },
+          {
+            "field_id": "project_started",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "preferred_value": false
+            },
+            "application_section": "project_timeline",
+            "application_field_name": "Proposed Project Start Date",
+            "used_for": ["eligibility"],
+            "weight": "critical",
+            "help_text": "Costs incurred before application may not be eligible except 12 months retroactive from April 16, 2024",
+            "retroactive_eligibility": {
+              "allowed": true,
+              "period_months": 12,
+              "earliest_eligible_date": "2024-04-16"
+            }
+          },
+          {
+            "field_id": "legal_name",
+            "field_name": "Legal Organization Name",
+            "data_type": "string",
+            "question_text": "What is the legal name of your organization?",
+            "help_text": "As shown on certificate of incorporation",
+            "application_section": "organization_information",
+            "application_field_name": "Legal name of applicant organization",
+            "used_for": ["application_form"],
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "cra_business_number",
+            "field_name": "CRA Business Number",
+            "data_type": "string",
+            "question_text": "What is your CRA Business/GST number?",
+            "help_text": "First 9 digits of your CRA business number",
+            "validation": {
+              "pattern": "^[0-9]{9}$"
+            },
+            "application_section": "organization_information",
+            "application_field_name": "CRA Business/GST number",
+            "used_for": ["application_form"],
+            "weight": "mandatory"
+          }
+        ],
+
+        "optional": [
+          {
+            "field_id": "founded_year",
+            "field_name": "Year Founded",
+            "data_type": "integer",
+            "question_text": "What year was your company founded?",
+            "application_section": "organization_information",
+            "application_field_name": "Date of Incorporation",
+            "used_for": ["application_form"],
+            "improves_assessment": false
+          },
+          {
+            "field_id": "annual_revenue",
+            "inherits_from": "universal_fields",
+            "application_section": "supporting_documents",
+            "application_field_name": "Financial Statements (shows revenue)",
+            "used_for": ["assessment", "credit_check"],
+            "improves_assessment": true
+          },
+          {
+            "field_id": "industry_sector",
+            "field_name": "Industry Sector",
+            "data_type": "enum",
+            "allowed_values": [
+              "advanced_manufacturing",
+              "clean_technology",
+              "digital_industries",
+              "health_biosciences",
+              "natural_resources_processing",
+              "value_added_agriculture",
+              "inclusiveness",
+              "other"
+            ],
+            "display_values": {
+              "advanced_manufacturing": "Advanced Manufacturing",
+              "clean_technology": "Clean Resources and Clean Technology",
+              "digital_industries": "Digital Industries",
+              "health_biosciences": "Health/Bio-sciences",
+              "natural_resources_processing": "Natural Resources Value-added Processing",
+              "value_added_agriculture": "Value-added Agriculture",
+              "inclusiveness": "Inclusiveness",
+              "other": "Other"
+            },
+            "question_text": "Which sector best describes your project?",
+            "application_section": "project_details",
+            "application_field_name": "RDA Priority Selection + Priority Alignment Explanation",
+            "used_for": ["assessment", "priority_scoring"],
+            "priority_sectors": [
+              "advanced_manufacturing",
+              "clean_technology",
+              "health_biosciences"
+            ],
+            "priority_areas": [
+              "Critical Minerals Processing",
+              "Food and Ingredients Processing",
+              "Zero Emission Heavy Equipment Vehicles"
+            ],
+            "improves_assessment": true
+          },
+          {
+            "field_id": "diversity_ownership",
+            "field_name": "Diverse Ownership/Leadership",
+            "data_type": "multi_select",
+            "allowed_values": [
+              "women_owned_led",
+              "indigenous_owned_led",
+              "youth_owned_led",
+              "persons_with_disabilities",
+              "visible_minorities",
+              "lgbtq",
+              "prefer_not_answer",
+              "none"
+            ],
+            "display_values": {
+              "women_owned_led": "Women-owned or led",
+              "indigenous_owned_led": "Indigenous Peoples-owned or led",
+              "youth_owned_led": "Youth-owned or led (18-39)",
+              "persons_with_disabilities": "Persons with disabilities",
+              "visible_minorities": "Visible minorities",
+              "lgbtq": "LGBTQ+ individuals",
+              "prefer_not_answer": "Prefer not to answer",
+              "none": "None of the above"
+            },
+            "question_text": "Is your organization majority-owned or led by any of the following groups?",
+            "help_text": "Select all that apply. This information helps with program priority assessment.",
+            "application_section": "diversity_inclusion",
+            "application_field_name": "Organization Ownership/Leadership",
+            "used_for": ["assessment"],
+            "improves_assessment": true
+          }
+        ],
+
+        "documents": [
+          {
+            "document_id": "financial_statements_2yr",
+            "document_name": "Financial Statements (Past 2 Years)",
+            "description": "Audited or review engagement financial statements for past 2 fiscal years",
+            "required_stage": "full_application",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["assessment", "credit_check"],
+            "application_field_name": "Required Financial Documents"
+          },
+          {
+            "document_id": "interim_financial_statements",
+            "document_name": "Interim Financial Statements (6 months)",
+            "description": "Most recent 6-month interim financial statements",
+            "required_stage": "full_application",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["assessment", "credit_check"],
+            "application_field_name": "Required Financial Documents"
+          },
+          {
+            "document_id": "proof_of_funding",
+            "document_name": "Proof of Confirmed Funding",
+            "description": "Bank statements, letters of intent from investors, credit facility letters, signed agreements, or term sheets proving 50%+ non-government funding secured",
+            "required_stage": "expression_of_interest",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["eligibility"],
+            "application_field_name": "Funding Confirmation",
+            "critical": true
+          },
+          {
+            "document_id": "business_plan",
+            "document_name": "Business Plan or Pitch Deck",
+            "description": "Comprehensive business overview with AI strategy and commercialization plan",
+            "required_stage": "full_application",
+            "file_types": ["pdf", "pptx"],
+            "mandatory": true,
+            "used_for": ["assessment"],
+            "application_field_name": "Supporting Documentation"
+          },
+          {
+            "document_id": "forecasted_financials",
+            "document_name": "Forecasted Income Statements and Cash Flow",
+            "description": "Financial projections for project duration (up to 3 years)",
+            "required_stage": "full_application",
+            "file_types": ["pdf", "xlsx"],
+            "mandatory": true,
+            "used_for": ["assessment"],
+            "application_field_name": "Required Financial Documents"
+          },
+          {
+            "document_id": "technology_questionnaire",
+            "document_name": "Technology Questionnaire",
+            "description": "For commercialization projects (Pillar 1): technical details of AI solution, TRL level, and commercialization strategy",
+            "required_stage": "full_application",
+            "file_types": ["pdf"],
+            "mandatory": false,
+            "conditional": "project_type == 'commercializing_ai'",
+            "used_for": ["assessment"],
+            "application_field_name": "Technology questionnaire"
+          }
+        ],
+
+        "calculated_fields": [
+          {
+            "field_id": "raii_funding_amount",
+            "field_name": "RAII Funding Amount",
+            "formula": "project_cost_estimate * 0.5",
+            "description": "RAII funds 50% of project costs for for-profit organizations",
+            "display_format": "currency_cad",
+            "bounds": {
+              "min": 250000,
+              "max": 5000000
+            }
+          },
+          {
+            "field_id": "non_government_funding_required",
+            "field_name": "Non-Government Funding Required",
+            "formula": "project_cost_estimate - raii_funding_amount",
+            "description": "Amount you must secure from non-government sources (minimum 50%)",
+            "display_format": "currency_cad"
+          },
+          {
+            "field_id": "confirmed_funding_amount",
+            "field_name": "Confirmed Funding Amount",
+            "formula": "(funding_secured_percentage / 100) * project_cost_estimate",
+            "description": "Dollar amount of funding you've confirmed",
+            "display_format": "currency_cad"
+          }
+        ]
+      },
+
+      "collection_guidance": {
+        "recommended_order": [
+          "business_structure",
+          "employee_count",
+          "years_in_operation",
+          "region",
+          "canadian_operations",
+          "project_type",
+          "project_cost_estimate",
+          "funding_secured_percentage",
+          "project_started",
+          "legal_name",
+          "cra_business_number",
+          "industry_sector"
+        ],
+        "early_disqualifiers": [
+          "business_structure",
+          "employee_count",
+          "years_in_operation",
+          "project_type",
+          "project_cost_estimate"
+        ],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 45,
+        "notes": "Ask early disqualifiers first to save time. If project_cost < $500K, route to smaller programs immediately."
+      }
+    },
+
+    {
+      "id": "ca-fed-nrc-irap",
+      "name": "NRC Industrial Research Assistance Program (IRAP)",
+      "short_name": "NRC IRAP",
+
+      "data_requirements": {
+        "mandatory": [
+          {
+            "field_id": "business_structure",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["for_profit_incorporated"]
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "business_structure != 'for_profit_incorporated'",
+            "weight": "mandatory",
+            "help_text": "IRAP is only for for-profit incorporated companies"
+          },
+          {
+            "field_id": "employee_count",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 1,
+              "max": 500
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "employee_count > 500",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "canadian_operations",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "must_be": true
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "canadian_operations == false",
+            "weight": "mandatory",
+            "help_text": "Must be incorporated in Canada with R&D activities in Canada"
+          },
+          {
+            "field_id": "project_type",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["early_stage_rd", "commercializing_ai", "generative_ai_deep_learning"]
+            },
+            "used_for": ["eligibility", "routing"],
+            "disqualifies_if": "project_type IN ['adopting_ai', 'planning_consulting']",
+            "routes_to_alternative": {
+              "adopting_ai": "ca-fed-raii",
+              "planning_consulting": "ca-on-dmap"
+            },
+            "weight": "mandatory",
+            "help_text": "Must involve technical uncertainty and innovation - not just implementation of existing solutions"
+          },
+          {
+            "field_id": "technical_uncertainty",
+            "field_name": "Technical Uncertainty Present",
+            "data_type": "boolean",
+            "question_text": "Does your project involve technical uncertainty that cannot be solved with existing knowledge?",
+            "help_text": "IRAP requires genuine innovation - not just implementing known solutions. You must be developing something new or significantly improved.",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "disqualifies_if": "technical_uncertainty == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "commercialization_potential",
+            "field_name": "Commercialization Potential",
+            "data_type": "boolean",
+            "question_text": "Does your project have clear commercialization potential within 2-3 years?",
+            "help_text": "IRAP requires a path to market and revenue generation",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "disqualifies_if": "commercialization_potential == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "project_started",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "must_be": false
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "project_started == true",
+            "weight": "mandatory",
+            "help_text": "Must apply before starting project. No retroactive funding."
+          }
+        ],
+
+        "optional": [
+          {
+            "field_id": "project_cost_estimate",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 10000,
+              "max": 10000000
+            },
+            "used_for": ["assessment"],
+            "improves_assessment": true,
+            "help_text": "Typical IRAP projects: $50K-$500K over 12-24 months"
+          },
+          {
+            "field_id": "annual_revenue",
+            "inherits_from": "universal_fields",
+            "used_for": ["assessment"],
+            "improves_assessment": true,
+            "help_text": "Pre-revenue companies are eligible"
+          },
+          {
+            "field_id": "years_in_operation",
+            "inherits_from": "universal_fields",
+            "used_for": ["assessment"],
+            "improves_assessment": false,
+            "help_text": "Startups (<1 year) are eligible"
+          },
+          {
+            "field_id": "technical_team_exists",
+            "field_name": "Technical Team in Place",
+            "data_type": "boolean",
+            "question_text": "Do you have technical staff (beyond founders) working on R&D?",
+            "help_text": "Strongly preferred but not absolute requirement for very early startups. IRAP can fund hiring technical staff.",
+            "used_for": ["assessment"],
+            "improves_assessment": true
+          },
+          {
+            "field_id": "has_customers_or_lois",
+            "field_name": "Customer Validation",
+            "data_type": "boolean",
+            "question_text": "Do you have customers, pilots, or letters of intent?",
+            "help_text": "Shows market validation and strengthens application",
+            "used_for": ["assessment"],
+            "improves_assessment": true
+          }
+        ],
+
+        "documents": [
+          {
+            "document_id": "business_plan_executive_summary",
+            "document_name": "Business Plan or Executive Summary",
+            "description": "Company overview, market opportunity, business model",
+            "required_stage": "ita_assessment",
+            "file_types": ["pdf", "pptx"],
+            "mandatory": true,
+            "used_for": ["assessment"]
+          },
+          {
+            "document_id": "financial_statements",
+            "document_name": "Financial Statements (Past 2 Years)",
+            "description": "Company financials - as available (startups may have limited history)",
+            "required_stage": "ita_assessment",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["assessment"]
+          },
+          {
+            "document_id": "management_team_cvs",
+            "document_name": "Management Team CVs/Resumes",
+            "description": "Credentials and experience of leadership team",
+            "required_stage": "ita_assessment",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["assessment"]
+          },
+          {
+            "document_id": "technical_team_cvs",
+            "document_name": "Technical Team CVs/Resumes",
+            "description": "Qualifications of technical staff working on R&D",
+            "required_stage": "ita_assessment",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["assessment"]
+          },
+          {
+            "document_id": "technical_project_description",
+            "document_name": "Technical Project Description",
+            "description": "Detailed technical overview of what you're developing, technical challenges, approach",
+            "required_stage": "proposal",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["assessment"]
+          }
+        ],
+
+        "calculated_fields": [
+          {
+            "field_id": "irap_salary_contribution",
+            "field_name": "IRAP Salary Contribution (Est.)",
+            "formula": "salary_costs * 0.80",
+            "description": "IRAP covers up to 80% of eligible salary costs",
+            "display_format": "currency_cad"
+          },
+          {
+            "field_id": "irap_contractor_contribution",
+            "field_name": "IRAP Contractor Contribution (Est.)",
+            "formula": "contractor_costs * 0.50",
+            "description": "IRAP covers up to 50% of contractor/consultant costs",
+            "display_format": "currency_cad"
+          }
+        ]
+      },
+
+      "collection_guidance": {
+        "recommended_order": [
+          "business_structure",
+          "employee_count",
+          "canadian_operations",
+          "project_type",
+          "technical_uncertainty",
+          "commercialization_potential",
+          "project_started",
+          "project_cost_estimate"
+        ],
+        "early_disqualifiers": [
+          "business_structure",
+          "employee_count",
+          "project_type",
+          "technical_uncertainty",
+          "project_started"
+        ],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 15,
+        "notes": "This is an ITA-led process. Gather minimal info for qualification, then connect with ITA at 1-877-994-4727 for full assessment. ITA will guide detailed proposal development."
+      }
+    },
+
+    {
+      "id": "ca-fed-ai-compute-access-fund",
+      "name": "AI Compute Access Fund",
+      "short_name": "ACAF",
+
+      "data_requirements": {
+        "mandatory": [],
+        "optional": [],
+        "documents": []
+      },
+
+      "collection_guidance": {
+        "recommended_order": [],
+        "early_disqualifiers": [],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 0,
+        "notes": "PROGRAM CLOSED - Do not collect data for this program. Route users to alternatives: NRC IRAP for compute-intensive R&D projects."
+      }
+    },
+
+    {
+      "id": "ca-fed-cdap",
+      "name": "Canada Digital Adoption Program (CDAP)",
+      "short_name": "CDAP",
+
+      "data_requirements": {
+        "mandatory": [],
+        "optional": [],
+        "documents": []
+      },
+
+      "collection_guidance": {
+        "recommended_order": [],
+        "early_disqualifiers": [],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 0,
+        "notes": "PROGRAM CLOSED - Do not collect data for this program. Route users to alternatives: BDC Data to AI for financing, provincial programs (Ontario DMAP, NS PIV) for planning grants."
+      }
+    },
+
+    {
+      "id": "ca-fed-sred",
+      "name": "Scientific Research & Experimental Development Tax Credit (SR&ED)",
+      "short_name": "SR&ED",
+
+      "data_requirements": {
+        "mandatory": [
+          {
+            "field_id": "business_structure",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["for_profit_incorporated", "for_profit_sole_proprietor"]
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "business_structure NOT IN ['for_profit_incorporated', 'for_profit_sole_proprietor']",
+            "weight": "mandatory",
+            "help_text": "Must file Canadian corporate tax return"
+          },
+          {
+            "field_id": "canadian_operations",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "must_be": true
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "canadian_operations == false",
+            "weight": "mandatory",
+            "help_text": "R&D work must be performed in Canada"
+          },
+          {
+            "field_id": "project_type",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["early_stage_rd", "generative_ai_deep_learning", "commercializing_ai"]
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "project_type IN ['adopting_ai', 'planning_consulting']",
+            "weight": "mandatory",
+            "help_text": "Must involve experimental development or applied research - not adoption"
+          },
+          {
+            "field_id": "technical_uncertainty_sred",
+            "field_name": "Technical Uncertainty (SR&ED Criteria)",
+            "data_type": "boolean",
+            "question_text": "Did your project involve technical uncertainty that couldn't be solved using standard practices?",
+            "help_text": "Must demonstrate uncertainty beyond current industry knowledge",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "disqualifies_if": "technical_uncertainty_sred == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "systematic_investigation",
+            "field_name": "Systematic Investigation",
+            "data_type": "boolean",
+            "question_text": "Did you follow a systematic approach with hypothesis, testing, and iteration?",
+            "help_text": "Must show structured experimentation, not just trial and error",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "disqualifies_if": "systematic_investigation == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "technological_advancement",
+            "field_name": "Technological Advancement",
+            "data_type": "boolean",
+            "question_text": "Did your work result in new knowledge or significant improvement in AI capabilities?",
+            "help_text": "Must achieve or attempt to achieve technological advancement",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "disqualifies_if": "technological_advancement == false",
+            "weight": "mandatory"
+          }
+        ],
+
+        "optional": [
+          {
+            "field_id": "employee_count",
+            "inherits_from": "universal_fields",
+            "used_for": ["assessment"],
+            "improves_assessment": true,
+            "help_text": "No size restrictions - all companies eligible. Affects credit rate (35% for small CCPCs, 15% for others)."
+          },
+          {
+            "field_id": "annual_revenue",
+            "inherits_from": "universal_fields",
+            "used_for": ["assessment"],
+            "improves_assessment": true,
+            "help_text": "Affects eligibility for enhanced 35% refundable rate (CCPCs with income <$500K)"
+          },
+          {
+            "field_id": "fiscal_year_end",
+            "field_name": "Fiscal Year End",
+            "data_type": "string",
+            "question_text": "What is your fiscal year-end date?",
+            "help_text": "Format: YYYY-MM-DD. Determines claim deadline (18 months after year-end)",
+            "used_for": ["timeline"],
+            "improves_assessment": false
+          },
+          {
+            "field_id": "rd_expenses_estimate",
+            "field_name": "Estimated R&D Expenses (Annual)",
+            "data_type": "decimal",
+            "question_text": "What were your estimated eligible R&D expenses in the fiscal year?",
+            "help_text": "Include R&D salaries, contractors, materials. Used to estimate credit amount.",
+            "used_for": ["assessment"],
+            "improves_assessment": true
+          }
+        ],
+
+        "documents": [
+          {
+            "document_id": "rd_documentation",
+            "document_name": "R&D Documentation",
+            "description": "Lab notebooks, code repositories, design documents, test results, records of experiments",
+            "required_stage": "claim_filing",
+            "file_types": ["pdf", "various"],
+            "mandatory": true,
+            "used_for": ["claim_substantiation"]
+          },
+          {
+            "document_id": "timesheets",
+            "document_name": "Employee Timesheets",
+            "description": "Time tracking showing R&D vs non-R&D work",
+            "required_stage": "claim_filing",
+            "file_types": ["xlsx", "pdf"],
+            "mandatory": true,
+            "used_for": ["claim_calculation"]
+          },
+          {
+            "document_id": "payroll_records",
+            "document_name": "Payroll Records",
+            "description": "Payroll records for R&D employees",
+            "required_stage": "claim_filing",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["claim_calculation"]
+          },
+          {
+            "document_id": "contractor_invoices",
+            "document_name": "Contractor Invoices",
+            "description": "Invoices for contractor/consultant R&D work",
+            "required_stage": "claim_filing",
+            "file_types": ["pdf"],
+            "mandatory": false,
+            "conditional": "has_contractor_expenses == true",
+            "used_for": ["claim_calculation"]
+          }
+        ],
+
+        "calculated_fields": [
+          {
+            "field_id": "federal_sred_credit_estimate",
+            "field_name": "Federal SR&ED Credit (Est.)",
+            "formula": "IF(is_small_ccpc, rd_expenses * 0.35, rd_expenses * 0.15)",
+            "description": "Estimated federal SR&ED tax credit",
+            "display_format": "currency_cad"
+          },
+          {
+            "field_id": "total_sred_recovery_estimate",
+            "field_name": "Total SR&ED Recovery (Est.)",
+            "formula": "federal_sred_credit + provincial_sred_credit",
+            "description": "Estimated total recovery including provincial credits (40-60% typical)",
+            "display_format": "currency_cad"
+          }
+        ]
+      },
+
+      "collection_guidance": {
+        "recommended_order": [
+          "business_structure",
+          "canadian_operations",
+          "project_type",
+          "technical_uncertainty_sred",
+          "systematic_investigation",
+          "technological_advancement",
+          "rd_expenses_estimate"
+        ],
+        "early_disqualifiers": [
+          "business_structure",
+          "project_type",
+          "technical_uncertainty_sred"
+        ],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 10,
+        "notes": "SR&ED is retroactive - claim after work is done. Main qualification is whether project meets 3 SR&ED criteria. Recommend SR&ED consultant for optimization."
+      }
+    },
+
+    {
+      "id": "ca-on-dmap",
+      "name": "Ontario Digital Modernization & Adoption Plan (DMAP)",
+      "short_name": "DMAP",
+
+      "data_requirements": {
+        "mandatory": [
+          {
+            "field_id": "business_structure",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["for_profit_incorporated", "for_profit_sole_proprietor"]
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "business_structure NOT IN ['for_profit_incorporated', 'for_profit_sole_proprietor']",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "employee_count",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 1,
+              "max": 499
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "employee_count < 1 OR employee_count >= 500",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "region",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["Ontario - Southern", "Ontario - Northern"]
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "region NOT IN ['Ontario - Southern', 'Ontario - Northern']",
+            "weight": "mandatory",
+            "help_text": "DMAP is Ontario-only"
+          },
+          {
+            "field_id": "project_type",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["planning_consulting"]
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "project_type != 'planning_consulting'",
+            "weight": "mandatory",
+            "help_text": "DMAP is specifically for planning phase, not implementation"
+          },
+          {
+            "field_id": "project_cost_estimate",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 10000,
+              "max": 30000
+            },
+            "used_for": ["eligibility"],
+            "help_text": "DMAP covers 50% up to $15K, so max $30K total consultant cost",
+            "weight": "mandatory"
+          }
+        ],
+
+        "optional": [
+          {
+            "field_id": "consultant_selected",
+            "field_name": "Digital Adoption Consultant Selected",
+            "data_type": "boolean",
+            "question_text": "Have you identified a qualified Digital Adoption Consultant?",
+            "help_text": "Must work with approved consultant from OCI network",
+            "used_for": ["application_readiness"],
+            "improves_assessment": true
+          },
+          {
+            "field_id": "planning_scope",
+            "field_name": "Planning Scope",
+            "data_type": "multi_select",
+            "allowed_values": [
+              "ai_readiness_assessment",
+              "identify_ai_use_cases",
+              "ai_implementation_roadmap",
+              "technology_vendor_assessment",
+              "change_management_planning"
+            ],
+            "display_values": {
+              "ai_readiness_assessment": "Assessing AI readiness",
+              "identify_ai_use_cases": "Identifying AI use cases for my business",
+              "ai_implementation_roadmap": "Creating AI implementation roadmap",
+              "technology_vendor_assessment": "Technology selection and vendor assessment",
+              "change_management_planning": "Change management and training planning"
+            },
+            "question_text": "What do you need help with? (Select all that apply)",
+            "help_text": "DMAP covers comprehensive digital modernization planning",
+            "used_for": ["assessment"],
+            "improves_assessment": false
+          }
+        ],
+
+        "documents": [
+          {
+            "document_id": "interest_form",
+            "document_name": "DMAP Interest Form",
+            "description": "Initial interest form submission",
+            "required_stage": "application",
+            "file_types": ["online_form"],
+            "mandatory": true,
+            "used_for": ["application"]
+          },
+          {
+            "document_id": "consultant_quote",
+            "document_name": "Consultant Quote",
+            "description": "Quote from approved Digital Adoption Consultant",
+            "required_stage": "application",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["application"]
+          }
+        ],
+
+        "calculated_fields": [
+          {
+            "field_id": "dmap_grant_amount",
+            "field_name": "DMAP Grant Amount",
+            "formula": "MIN(project_cost_estimate * 0.5, 15000)",
+            "description": "DMAP covers 50% up to $15,000",
+            "display_format": "currency_cad"
+          },
+          {
+            "field_id": "business_contribution",
+            "field_name": "Your Contribution",
+            "formula": "project_cost_estimate - dmap_grant_amount",
+            "description": "Amount you must pay (50% of consultant cost)",
+            "display_format": "currency_cad"
+          }
+        ]
+      },
+
+      "collection_guidance": {
+        "recommended_order": [
+          "region",
+          "business_structure",
+          "employee_count",
+          "project_type",
+          "project_cost_estimate",
+          "consultant_selected"
+        ],
+        "early_disqualifiers": [
+          "region",
+          "employee_count"
+        ],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 10,
+        "notes": "Perfect first step for Ontario SMEs unsure about AI strategy. Leads to TDP implementation funding up to $150K."
+      }
+    },
+
+    {
+      "id": "ca-fed-nrc-irap-ai-assist",
+      "name": "NRC IRAP AI Assist Program",
+      "short_name": "AI Assist",
+
+      "data_requirements": {
+        "mandatory": [
+          {
+            "field_id": "business_structure",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["for_profit_incorporated"]
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "business_structure != 'for_profit_incorporated'",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "employee_count",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 1,
+              "max": 500
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "employee_count > 500",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "canadian_operations",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "must_be": true
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "canadian_operations == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "project_type",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["generative_ai_deep_learning"]
+            },
+            "used_for": ["eligibility", "routing"],
+            "disqualifies_if": "project_type != 'generative_ai_deep_learning'",
+            "routes_to_alternative": {
+              "early_stage_rd": "ca-fed-nrc-irap",
+              "adopting_ai": "ca-fed-raii"
+            },
+            "weight": "mandatory",
+            "help_text": "AI Assist is specifically for Generative AI and Deep Learning projects"
+          },
+          {
+            "field_id": "genai_or_dl_type",
+            "field_name": "GenAI or Deep Learning Type",
+            "data_type": "single_select",
+            "allowed_values": [
+              "generative_ai",
+              "deep_learning",
+              "both_genai_dl",
+              "traditional_ml_only"
+            ],
+            "display_values": {
+              "generative_ai": "Generative AI (text, image, code generation, etc.)",
+              "deep_learning": "Deep Learning / Deep Neural Networks",
+              "both_genai_dl": "Both GenAI and Deep Learning",
+              "traditional_ml_only": "Traditional ML only (not GenAI/DL)"
+            },
+            "question_text": "Are you developing or integrating Generative AI or Deep Learning?",
+            "used_for": ["eligibility"],
+            "validation": {
+              "allowed_values": ["generative_ai", "deep_learning", "both_genai_dl"]
+            },
+            "disqualifies_if": "genai_or_dl_type == 'traditional_ml_only'",
+            "routes_to_alternative": {
+              "traditional_ml_only": "ca-fed-nrc-irap"
+            },
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "integration_depth",
+            "field_name": "Integration Depth",
+            "data_type": "single_select",
+            "allowed_values": [
+              "core_product",
+              "significant_enhancement",
+              "just_experimenting",
+              "using_apis_only"
+            ],
+            "display_values": {
+              "core_product": "Core product functionality",
+              "significant_enhancement": "Significant product enhancement",
+              "just_experimenting": "Just experimenting/exploring",
+              "using_apis_only": "Using off-the-shelf APIs only"
+            },
+            "question_text": "How are you using GenAI/DL?",
+            "used_for": ["eligibility"],
+            "validation": {
+              "preferred_values": ["core_product", "significant_enhancement"]
+            },
+            "help_text": "Must be actively incorporating into products/services, not just using ChatGPT API",
+            "weight": "mandatory"
+          }
+        ],
+
+        "optional": [],
+
+        "documents": [],
+
+        "calculated_fields": []
+      },
+
+      "collection_guidance": {
+        "recommended_order": [
+          "business_structure",
+          "employee_count",
+          "canadian_operations",
+          "project_type",
+          "genai_or_dl_type",
+          "integration_depth"
+        ],
+        "early_disqualifiers": [
+          "business_structure",
+          "employee_count",
+          "genai_or_dl_type"
+        ],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 5,
+        "notes": "AI Assist provides advisory services ($500 cost to SME). Can be combined with regular IRAP R&D funding. Call 1-877-994-4727 and mention AI Assist."
+      }
+    },
+
+    {
+      "id": "ca-fed-bdc-data-to-ai",
+      "name": "BDC Data to AI Program",
+      "short_name": "BDC Data to AI",
+
+      "data_requirements": {
+        "mandatory": [
+          {
+            "field_id": "business_structure",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["for_profit_incorporated", "for_profit_sole_proprietor"]
+            },
+            "used_for": ["eligibility"],
+            "weight": "mandatory",
+            "help_text": "Must meet BDC standard lending criteria"
+          },
+          {
+            "field_id": "canadian_operations",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "must_be": true
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "canadian_operations == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "creditworthiness",
+            "field_name": "Creditworthy",
+            "data_type": "enum",
+            "allowed_values": ["good", "fair", "poor", "unknown"],
+            "question_text": "How would you describe your credit situation?",
+            "help_text": "This is a loan requiring credit evaluation. Be honest - BDC will assess.",
+            "used_for": ["eligibility"],
+            "weight": "critical",
+            "disqualifies_if": "creditworthiness == 'poor'"
+          },
+          {
+            "field_id": "project_type",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["adopting_ai", "planning_consulting"]
+            },
+            "used_for": ["eligibility"],
+            "weight": "mandatory",
+            "help_text": "BDC Data to AI is for implementing/adopting AI, not developing new AI tech"
+          }
+        ],
+
+        "optional": [
+          {
+            "field_id": "project_cost_estimate",
+            "inherits_from": "universal_fields",
+            "used_for": ["assessment"],
+            "improves_assessment": true,
+            "help_text": "BDC can finance up to 100% of project costs"
+          },
+          {
+            "field_id": "employee_count",
+            "inherits_from": "universal_fields",
+            "used_for": ["assessment"],
+            "improves_assessment": false,
+            "help_text": "No specific limit but primarily targets SMEs"
+          },
+          {
+            "field_id": "annual_revenue",
+            "inherits_from": "universal_fields",
+            "used_for": ["assessment", "credit_evaluation"],
+            "improves_assessment": true
+          },
+          {
+            "field_id": "years_in_operation",
+            "inherits_from": "universal_fields",
+            "used_for": ["assessment", "credit_evaluation"],
+            "improves_assessment": true,
+            "help_text": "Longer operating history improves credit assessment"
+          }
+        ],
+
+        "documents": [
+          {
+            "document_id": "financial_statements",
+            "document_name": "Business Financial Statements (2-3 years)",
+            "description": "Company financials for credit assessment",
+            "required_stage": "financing_application",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["credit_evaluation"]
+          },
+          {
+            "document_id": "tax_returns",
+            "document_name": "Corporate Tax Returns",
+            "description": "Recent corporate tax returns",
+            "required_stage": "financing_application",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["credit_evaluation"]
+          },
+          {
+            "document_id": "personal_financial_statements",
+            "document_name": "Personal Financial Statements",
+            "description": "For owners/guarantors",
+            "required_stage": "financing_application",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["credit_evaluation"]
+          },
+          {
+            "document_id": "ai_adoption_roadmap",
+            "document_name": "AI Adoption Roadmap",
+            "description": "BDC creates this with you during advisory phase",
+            "required_stage": "financing_application",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["loan_approval"],
+            "notes": "BDC develops this during advisory engagement"
+          }
+        ],
+
+        "calculated_fields": [
+          {
+            "field_id": "bdc_loan_amount",
+            "field_name": "BDC Loan Amount",
+            "formula": "project_cost_estimate * 1.0",
+            "description": "BDC can finance up to 100% of project costs",
+            "display_format": "currency_cad"
+          }
+        ]
+      },
+
+      "collection_guidance": {
+        "recommended_order": [
+          "business_structure",
+          "canadian_operations",
+          "creditworthiness",
+          "project_type",
+          "project_cost_estimate",
+          "annual_revenue",
+          "years_in_operation"
+        ],
+        "early_disqualifiers": [
+          "business_structure",
+          "creditworthiness",
+          "project_type"
+        ],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 10,
+        "notes": "No formal application - call 1-877-232-2269. BDC does needs assessment, creates roadmap, then finances implementation. Timeline: 2-3 months total."
+      }
+    },
+
+    {
+      "id": "ca-ns-productivity-innovation-voucher",
+      "name": "Nova Scotia Productivity and Innovation Voucher",
+      "short_name": "PIV",
+
+      "data_requirements": {
+        "mandatory": [
+          {
+            "field_id": "business_structure",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["for_profit_incorporated", "for_profit_sole_proprietor"]
+            },
+            "used_for": ["eligibility"],
+            "weight": "mandatory",
+            "help_text": "Registered business in good standing"
+          },
+          {
+            "field_id": "employee_count",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 1,
+              "max": 99
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "employee_count >= 100",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "region",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "allowed_values": ["Nova Scotia"]
+            },
+            "used_for": ["eligibility"],
+            "disqualifies_if": "region != 'Nova Scotia'",
+            "weight": "mandatory",
+            "help_text": "PIV is Nova Scotia only"
+          },
+          {
+            "field_id": "university_partner",
+            "field_name": "University/College Partner",
+            "data_type": "enum",
+            "allowed_values": [
+              "dalhousie_university",
+              "saint_marys_university",
+              "acadia_university",
+              "cape_breton_university",
+              "nscc",
+              "other_ns_institution",
+              "not_yet_identified"
+            ],
+            "display_values": {
+              "dalhousie_university": "Dalhousie University",
+              "saint_marys_university": "Saint Mary's University",
+              "acadia_university": "Acadia University",
+              "cape_breton_university": "Cape Breton University",
+              "nscc": "NSCC (Nova Scotia Community College)",
+              "other_ns_institution": "Other NS post-secondary institution",
+              "not_yet_identified": "Not yet identified (need help finding partner)"
+            },
+            "question_text": "Have you identified a Nova Scotia university or college partner?",
+            "help_text": "Must collaborate with eligible NS post-secondary institution",
+            "used_for": ["eligibility", "application"],
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "previous_piv_recipient",
+            "field_name": "Previous PIV Recipient",
+            "data_type": "boolean",
+            "question_text": "Have you received a Tier 1 voucher previously?",
+            "help_text": "Determines if you're eligible for Tier 2 ($25K) or Tier 1 ($15K)",
+            "used_for": ["tier_determination"],
+            "weight": "tier_determination"
+          }
+        ],
+
+        "optional": [
+          {
+            "field_id": "project_description",
+            "field_name": "Project Description",
+            "data_type": "text",
+            "question_text": "What technical challenge are you trying to solve?",
+            "help_text": "Should demonstrate clear business problem that university expertise can address",
+            "used_for": ["application"],
+            "improves_assessment": true
+          },
+          {
+            "field_id": "research_partner_identified",
+            "field_name": "Research Partner Identified",
+            "data_type": "boolean",
+            "question_text": "Have you identified a professor or researcher to partner with?",
+            "help_text": "Can apply without partner identified, but strengthens application",
+            "used_for": ["application_readiness"],
+            "improves_assessment": true
+          }
+        ],
+
+        "documents": [
+          {
+            "document_id": "application_form",
+            "document_name": "Online Application Form",
+            "description": "Completed online application (all questions mandatory)",
+            "required_stage": "application",
+            "file_types": ["online_form"],
+            "mandatory": true,
+            "used_for": ["application"]
+          },
+          {
+            "document_id": "service_provider_form",
+            "document_name": "Service Provider Form",
+            "description": "Completed and signed by university/college partner",
+            "required_stage": "application",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["application"]
+          },
+          {
+            "document_id": "company_information_form",
+            "document_name": "Company Information Form",
+            "description": "Company details and project information",
+            "required_stage": "application",
+            "file_types": ["pdf"],
+            "mandatory": true,
+            "used_for": ["application"]
+          }
+        ],
+
+        "calculated_fields": [
+          {
+            "field_id": "piv_voucher_amount",
+            "field_name": "PIV Voucher Amount",
+            "formula": "IF(previous_piv_recipient == true, 25000, 15000)",
+            "description": "Tier 1: $15K, Tier 2: $25K (for previous recipients)",
+            "display_format": "currency_cad"
+          }
+        ]
+      },
+
+      "collection_guidance": {
+        "recommended_order": [
+          "region",
+          "business_structure",
+          "employee_count",
+          "university_partner",
+          "previous_piv_recipient",
+          "project_description"
+        ],
+        "early_disqualifiers": [
+          "region",
+          "employee_count"
+        ],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 15,
+        "notes": "Application window: May 7 - June 4, 2025 ONLY. Must complete project by March 16, 2026. Zero cost to business - entirely free R&D services."
+      }
+    },
+
+    {
+      "id": "ca-supercluster-scale-ai",
+      "name": "Scale AI (Supply Chains Supercluster)",
+      "short_name": "Scale AI",
+
+      "data_requirements": {
+        "mandatory": [
+          {
+            "field_id": "consortium_formed",
+            "field_name": "Consortium Formed",
+            "data_type": "boolean",
+            "question_text": "Have you formed a consortium of 3-4 organizations?",
+            "help_text": "Scale AI requires consortium model with at least one SME partner",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "disqualifies_if": "consortium_formed == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "has_sme_in_consortium",
+            "field_name": "SME in Consortium",
+            "data_type": "boolean",
+            "question_text": "Does your consortium include at least one SME (under 500 employees)?",
+            "help_text": "At least one consortium member must be SME",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "disqualifies_if": "has_sme_in_consortium == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "project_cost_estimate",
+            "inherits_from": "universal_fields",
+            "validation": {
+              "min": 1500000,
+              "max": 8000000
+            },
+            "used_for": ["eligibility"],
+            "weight": "mandatory",
+            "help_text": "Scale AI targets $1.5M-$8M projects",
+            "disqualifies_if": "project_cost_estimate < 1500000 OR project_cost_estimate > 8000000"
+          },
+          {
+            "field_id": "supply_chain_focus",
+            "field_name": "Supply Chain Focus",
+            "data_type": "boolean",
+            "question_text": "Does your AI project address supply chain challenges?",
+            "help_text": "Must focus on retail, manufacturing, logistics, healthcare, infrastructure supply chains",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "disqualifies_if": "supply_chain_focus == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "creates_new_ip",
+            "field_name": "Creates New IP",
+            "data_type": "boolean",
+            "question_text": "Will your project create new intellectual property?",
+            "help_text": "Must generate new foreground IP - not just adoption",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "disqualifies_if": "creates_new_ip == false",
+            "weight": "mandatory"
+          },
+          {
+            "field_id": "scale_ai_membership",
+            "field_name": "Scale AI Membership",
+            "data_type": "boolean",
+            "question_text": "Are you willing to become a Scale AI member?",
+            "help_text": "Membership fees not due until after project approval",
+            "used_for": ["eligibility"],
+            "validation": {
+              "must_be": true
+            },
+            "weight": "mandatory"
+          }
+        ],
+
+        "optional": [
+          {
+            "field_id": "project_sector",
+            "field_name": "Project Sector",
+            "data_type": "enum",
+            "allowed_values": [
+              "consumer_goods_retail",
+              "industrial_goods_manufacturing",
+              "transport_logistics",
+              "healthcare",
+              "infrastructure_construction"
+            ],
+            "display_values": {
+              "consumer_goods_retail": "Consumer goods and retail",
+              "industrial_goods_manufacturing": "Industrial goods and manufacturing",
+              "transport_logistics": "Transport and logistics",
+              "healthcare": "Healthcare",
+              "infrastructure_construction": "Infrastructure and construction"
+            },
+            "question_text": "Which sector does your project fall under?",
+            "used_for": ["assessment"],
+            "improves_assessment": true
+          }
+        ],
+
+        "documents": [],
+
+        "calculated_fields": [
+          {
+            "field_id": "scale_ai_contribution",
+            "field_name": "Scale AI Contribution (Est.)",
+            "formula": "project_cost_estimate * 0.45",
+            "description": "Scale AI typically funds 40-50% of project costs",
+            "display_format": "currency_cad"
+          }
+        ]
+      },
+
+      "collection_guidance": {
+        "recommended_order": [
+          "consortium_formed",
+          "has_sme_in_consortium",
+          "project_cost_estimate",
+          "supply_chain_focus",
+          "creates_new_ip",
+          "scale_ai_membership"
+        ],
+        "early_disqualifiers": [
+          "consortium_formed",
+          "project_cost_estimate",
+          "supply_chain_focus",
+          "creates_new_ip"
+        ],
+        "skip_if_disqualified": true,
+        "estimated_time_minutes": 10,
+        "notes": "Attend Scale AI info session (Thursdays 3PM EST) to validate fit and find partners. Large-scale collaborative projects only."
+      }
+    }
+  ]
+}

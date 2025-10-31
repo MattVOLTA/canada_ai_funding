@@ -1,0 +1,19 @@
+{
+  "name": "ai-funding-migration",
+  "version": "1.0.0",
+  "description": "Migration tool to parse funding program reports and import into MongoDB",
+  "type": "module",
+  "scripts": {
+    "migrate": "node src/migrate.js",
+    "migrate:single": "node src/migrate-single.js",
+    "test": "node src/test-parser.js"
+  },
+  "dependencies": {
+    "mongodb": "^6.10.0",
+    "dotenv": "^16.4.5",
+    "gray-matter": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.6"
+  }
+}
