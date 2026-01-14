@@ -1,6 +1,6 @@
 # Funding Program Research Registry
 
-**Last Updated:** 2025-10-31
+**Last Updated:** 2025-11-05
 
 This registry tracks all researched funding programs with links to detailed reports.
 
@@ -35,6 +35,7 @@ This registry tracks all researched funding programs with links to detailed repo
 - **Regional Artificial Intelligence Initiative (RAII)** - Continuous intake until December 31, 2028; $250K-$5M per project; delivered by 7 Regional Development Agencies
 - **BDC Data to AI Program** - Continuous intake (no deadline); Term loan financing up to 100% of AI adoption costs; includes advisory services; 8-year repayment
 - **NRC Industrial Research Assistance Program (IRAP)** - Continuous intake (advisor-led); $50K-$10M for R&D projects; up to 80% salary costs, 50% contractor costs; non-repayable grant
+- **Volta Residency Programs** - Continuous intake (rolling applications); Atlantic Canada's startup hub; 3-stage residency (Signal/Catalyst/Growth); specialized AI and Scale AI programs
 
 ### Seasonal Programs (Periodic Intakes)
 
@@ -50,12 +51,12 @@ This registry tracks all researched funding programs with links to detailed repo
 
 ## Research Statistics
 
-**Total Programs Researched:** 6
-**Average Completeness Score:** 79.7%
-**Average Quality Score:** 85.0%
-**Last Research Date:** 2025-10-31
+**Total Programs Researched:** 7
+**Average Completeness Score:** 80.9%
+**Average Quality Score:** 86.4%
+**Last Research Date:** 2025-11-05
 
 ---
 
 *This registry is automatically updated when new program research is completed.*
-| 2025-10-31 | Volta Residency Programs | Active | 88% | 85% | [Link](./volta-residency-2025-10-31.md) |
+| 2025-11-05 | Volta Residency Programs | Volta (Private Non-Profit) | Active (Continuous intake) | 88% | 90% | [Link](./volta-residency-2025-11-05.md) |

@@ -1,0 +1,420 @@
+{
+  "program_name": "Workplace Innovation and Productivity Skills Incentive (WIPSI)",
+  "program_id": "ca-ns-wipsi",
+  "source": "LaMPSS Application Portal",
+  "application_url": "https://lampss.novascotia.ca/forms/ofa/Q5WL0P",
+  "last_updated": "2025-11-02",
+  "total_steps": 14,
+  "application_structure": {
+    "online_form": "14-step LaMPSS application (structured data collection)",
+    "proposal_document": "10-section detailed proposal (narrative document attached to application)",
+    "supporting_documents": "5 required + multiple optional documents"
+  },
+  "application_questions": [
+    {
+      "step": 1,
+      "title": "Organization Information",
+      "category": "Administrative Setup",
+      "questions": [
+        "Organization Legal Name",
+        "Organization Common Name",
+        "Registry Joint Stock Companies Number",
+        "CRA Business Number",
+        "Organization Type (Government, Private – For Profit, Private – Not For Profit)",
+        "Number of Employees",
+        "Organization Phone Number",
+        "Extension",
+        "Organization Fax"
+      ]
+    },
+    {
+      "step": 2,
+      "title": "Organization Additional Information",
+      "category": "Administrative Setup",
+      "questions": [
+        "Web Site",
+        "Date Established in Nova Scotia",
+        "Organization Mandate (describe organization, product lines/services, unique features)",
+        "NAICS Code",
+        "HST Rebate %",
+        "Service Language (English/French)",
+        "Correspondence Language (English/French)"
+      ]
+    },
+    {
+      "step": 3,
+      "title": "Organization Address",
+      "category": "Administrative Setup",
+      "questions": [
+        "Mailing Address - Apt/Unit",
+        "Mailing Address - Street",
+        "Mailing Address - City / Community",
+        "Mailing Address - Province",
+        "Mailing Address - Country",
+        "Mailing Address - Postal Code",
+        "Does your civic address differ from your mailing address? (Yes/No)"
+      ]
+    },
+    {
+      "step": 4,
+      "title": "Organization Contact Information",
+      "category": "Administrative Setup",
+      "questions": [
+        "Job Title (LaMPSS Access Administrator)",
+        "First Name",
+        "Last Name",
+        "Telephone",
+        "Mobile",
+        "Email",
+        "Checkbox: I understand the role and agree to be the LaMPSS access administrator for this organization."
+      ]
+    },
+    {
+      "step": 5,
+      "title": "Direct Deposit Information",
+      "category": "Financial Administration",
+      "questions": [
+        "Are you ready to set up the direct deposit now? (Yes/No)",
+        "Provide VOID cheque and Nova Scotia Direct Deposit Authorization Form"
+      ]
+    },
+    {
+      "step": 6,
+      "title": "Training Program Information",
+      "category": "Program Details",
+      "questions": [
+        "Training Program Delivery Type",
+        "County (location of training)"
+      ]
+    },
+    {
+      "step": 7,
+      "title": "Sales and Revenue Information",
+      "category": "Financial Eligibility",
+      "questions": [
+        "Total Net Sales for last fiscal year (CAD)",
+        "Revenue Sources (Inside Nova Scotia, Other Provinces/Territories, Outside Canada)",
+        "Approximate % of revenue from outside NS (0–15%, 16–25%, 26–50%, 51–100%)",
+        "Is 30% of your revenue generated through Eligible commercial activity? (Yes/No)"
+      ]
+    },
+    {
+      "step": 8,
+      "title": "Employee Information",
+      "category": "Organizational Profile",
+      "questions": [
+        "Number of Employees Full time",
+        "Number of Employees Part time",
+        "Number of Employees Seasonal"
+      ]
+    },
+    {
+      "step": 9,
+      "title": "Additional Funding",
+      "category": "Funding Stacking",
+      "questions": [
+        "Have you received funding from other sources in the past 12 months? (Yes/No)"
+      ],
+      "note": "This relates to stacking rules - program does not fund training already funded by other government programs"
+    },
+    {
+      "step": 10,
+      "title": "Contact Information",
+      "category": "Program Contact",
+      "questions": [
+        "Title (contact person regarding application)",
+        "First name",
+        "Last name",
+        "Telephone",
+        "Mobile",
+        "Email"
+      ]
+    },
+    {
+      "step": 11,
+      "title": "Location",
+      "category": "Program Logistics",
+      "questions": [
+        "Identify the location(s) where the Program, Activities, or Work will take place"
+      ]
+    },
+    {
+      "step": 12,
+      "title": "Training Program and Budget Information",
+      "category": "Program Details",
+      "questions": [
+        "Training Program name",
+        "Location",
+        "Start Date",
+        "End Date"
+      ],
+      "note": "Must adhere to 12-month funding period"
+    },
+    {
+      "step": 13,
+      "title": "Legal Signing Officers",
+      "category": "Authorization",
+      "questions": [
+        "List of legal signing officers (Title, Name, Is Signature Mandatory?)",
+        "Signature Conditions (textarea: how many/which signatures are required)"
+      ]
+    },
+    {
+      "step": 14,
+      "title": "Supporting Documents",
+      "category": "Document Submission",
+      "required_documents": [
+        "Detailed Training Description",
+        "Detailed Training Quote",
+        "Itemized Budget Breakdown",
+        "Participant List",
+        "Trainer Bio/Credentials"
+      ],
+      "optional_documents": [
+        "Board/Staff Members",
+        "Business Plan",
+        "Cash Flow Forecast",
+        "Communication",
+        "Confirmation (IRAP, SR&ED)",
+        "Course Information",
+        "Project Description",
+        "Evaluation",
+        "Financial Statement"
+      ],
+      "note": "The 'Detailed Training Description' likely contains the 10-section proposal outlined in the Guidelines PDF (pages 7-10)"
+    }
+  ],
+  "proposal_requirements": {
+    "document_type": "Detailed Training Description (attached at Step 14)",
+    "format": "Narrative document following 10-section structure from Guidelines",
+    "sections": [
+      {
+        "section": 1,
+        "title": "Executive Summary",
+        "subsections": [
+          "Overview: Brief summary highlighting purpose, objectives, expected impact",
+          "Alignment with Priorities: How project aligns with government priorities"
+        ]
+      },
+      {
+        "section": 2,
+        "title": "Project Objectives and Scope",
+        "subsections": [
+          "Specific Goals: Primary goals (skill development, productivity improvement)",
+          "Target Audience: Who will benefit (sectors or individual business)",
+          "Scope of Work: Key activities, locations, number of participants"
+        ]
+      },
+      {
+        "section": 3,
+        "title": "Project Justification and Need",
+        "subsections": [
+          "Problem Statement: Workforce gap or skill shortage to address",
+          "Relevance to Sector Needs: Sector-specific demand or emerging trends",
+          "Capacity-Building Focus: How project increases organization's capacity"
+        ]
+      },
+      {
+        "section": 4,
+        "title": "Detailed Project Description",
+        "subsections": [
+          "Activities and Deliverables: Planned activities, deliverables, timelines",
+          "Trainer Qualifications and Expertise: Education, experience, certifications, references",
+          "Training Methods: Approach (on-site, online, workshops) and rationale",
+          "Innovation Elements: New technology, partnerships, novel approaches"
+        ]
+      },
+      {
+        "section": 5,
+        "title": "Expected Outcomes and Impact",
+        "subsections": [
+          "Measurable Outcomes: Specific outcomes (# trained, productivity improvements)",
+          "Long-Term Impact: Impact on organization/sector",
+          "Alignment with Program Objectives: Link to government goals"
+        ]
+      },
+      {
+        "section": 6,
+        "title": "Evaluation and Measurement Plan",
+        "subsections": [
+          "Success Metrics: Metrics to measure success (skill gains, operational efficiency)",
+          "Evaluation Process: How outcomes tracked (data collection, reporting timelines, tools)"
+        ]
+      },
+      {
+        "section": 7,
+        "title": "Project Timeline",
+        "subsections": [
+          "Milestones: Major milestones, deliverables, project schedule",
+          "Start and End Dates: Adherence to 12-month funding period"
+        ]
+      },
+      {
+        "section": 8,
+        "title": "Budget and Funding Requirements",
+        "subsections": [
+          "Detailed Budget: Breakdown by line items (training costs, materials, instructor fees, travel)",
+          "Funding Request: Amount requested and other funding sources",
+          "Cost Justification: How each budget item supports goals and outcomes"
+        ]
+      },
+      {
+        "section": 9,
+        "title": "Organizational Capacity and Expertise",
+        "subsections": [
+          "Project Management Plan: How project managed, team roles and responsibilities"
+        ]
+      },
+      {
+        "section": 10,
+        "title": "Sustainability and Scalability",
+        "subsections": [
+          "Sustainability Plan: How organization maintains benefits over time",
+          "Scalability: Could project be scaled or replicated?"
+        ]
+      }
+    ]
+  },
+  "assessment_criteria": {
+    "individual_businesses": {
+      "total_weight": "100%",
+      "criteria": [
+        {
+          "criterion": "Alignment with Program Objectives",
+          "weight": "35%",
+          "scoring": {
+            "0-5": "Does not meet expectations - Lacks clear problem statement, no link to needs, no measurable outcomes",
+            "6-10": "Partially meets expectations - Defines problem but lacks depth, some outcomes but no detailed evaluation plan",
+            "11-15": "Meets expectations - Clearly articulates problem with evidence, clear quantifiable outcomes, addresses high-demand skills, meaningful partnerships"
+          }
+        },
+        {
+          "criterion": "Project Design and Feasibility",
+          "weight": "25%",
+          "scoring": {
+            "0-5": "Does not meet - Lacks clear objectives, unrealistic timeline, no logical approach",
+            "6-10": "Partially meets - Provides objectives and basic timeline but lacks methodology clarity",
+            "11-15": "Meets - SMART objectives with clear, realistic methodology and timeline"
+          }
+        },
+        {
+          "criterion": "Fostering Equity, Diversity, Inclusion and Accessibility",
+          "weight": "15%",
+          "scoring": {
+            "0-5": "Does not meet - Does not address EDIA or reach to underrepresented groups",
+            "6-10": "Partially meets - Some diversity initiatives but lacks structured approach",
+            "11-15": "Meets - Strong, actionable EDIA commitment with clear strategies and partnerships"
+          }
+        },
+        {
+          "criterion": "Impact and Sustainability",
+          "weight": "25%",
+          "scoring": {
+            "0-5": "Does not meet - Lacks defined outcomes, no business benefits explanation, no measurement plan",
+            "6-10": "Partially meets - Outlines outcomes but lacks clarity on immediate benefits or operational integration",
+            "11-15": "Meets - Clearly defines immediate business impact, has measurement plan, outlines future potential"
+          }
+        }
+      ]
+    },
+    "sectors_associations": {
+      "total_weight": "100%",
+      "criteria": [
+        {
+          "criterion": "Alignment with Program Objectives",
+          "weight": "30%"
+        },
+        {
+          "criterion": "Project Design and Feasibility",
+          "weight": "25%"
+        },
+        {
+          "criterion": "Impact and Sustainability",
+          "weight": "25%"
+        },
+        {
+          "criterion": "Fostering Equity, Diversity, Inclusion and Accessibility",
+          "weight": "15%"
+        },
+        {
+          "criterion": "Collaboration and Resource Sharing",
+          "weight": "5%",
+          "scoring": {
+            "0-3": "Does not meet - No partnerships or shared resources",
+            "4-6": "Meets - Some resource-sharing but lacks full commitment details",
+            "7-10": "Exceeds - Well-defined partnerships with financial/in-kind contributions, specified roles and commitments"
+          }
+        }
+      ]
+    }
+  },
+  "application_preparation_guide": {
+    "estimated_time": {
+      "online_form": "2-3 hours (Steps 1-14 data entry)",
+      "proposal_document": "30-60 hours (10-section detailed proposal)",
+      "supporting_documents": "10-20 hours (gathering trainer credentials, creating itemized budget, etc.)",
+      "total": "42-83 hours for comprehensive application"
+    },
+    "preparation_checklist": [
+      "✓ Registry Joint Stock Companies Number",
+      "✓ CRA Business Number",
+      "✓ NAICS Code",
+      "✓ Last fiscal year financial statements",
+      "✓ Employee counts (FT, PT, Seasonal)",
+      "✓ Direct deposit banking information + VOID cheque",
+      "✓ Training program start and end dates (must fit 12-month period)",
+      "✓ Training provider/trainer credentials and references",
+      "✓ Detailed itemized budget breakdown",
+      "✓ List of participants (or estimated participant profile)",
+      "✓ Evidence of 25% co-funding commitment",
+      "✓ Legal signing officers information",
+      "✓ 10-section proposal document (comprehensive narrative)"
+    ]
+  },
+  "key_insights": {
+    "two_part_application": "The application consists of: (1) Structured data entry in 14-step LaMPSS form, (2) Detailed narrative proposal document following 10-section guidelines",
+    "proposal_is_critical": "The 'Detailed Training Description' document (Step 14) is where the substantive content resides - this is what gets scored using the assessment rubric",
+    "form_collects_admin_data": "Steps 1-13 collect administrative, financial, and logistical data for eligibility verification and payment processing",
+    "stacking_disclosure": "Step 9 asks about other funding sources - relates to restriction on training already funded by other government programs",
+    "timeline_constraints": "Step 12 requires start/end dates within 12-month funding period"
+  },
+  "success_factors": {
+    "must_have": [
+      "SMART objectives (Specific, Measurable, Achievable, Relevant, Time-bound)",
+      "Clear problem statement with supporting evidence",
+      "Quantifiable outcomes (# employees trained, productivity metrics, etc.)",
+      "Realistic timeline with major milestones",
+      "Detailed trainer qualifications with references",
+      "Itemized budget with cost justification",
+      "25% co-funding commitment from non-government sources",
+      "Evidence of NEW capacity building (not routine professional development)"
+    ],
+    "strong_differentiators": [
+      "Addresses critical skill shortages in high-demand occupations",
+      "Supports underrepresented communities (Indigenous, Black/African Nova Scotian, newcomers, persons with disabilities, 2SLGBTQIA+, youth, rural workers)",
+      "Strategic partnerships with educational institutions or training providers",
+      "Key economic sector alignment (provincial priorities)",
+      "Clear EDIA (Equity, Diversity, Inclusion, Accessibility) commitment",
+      "Sustainability plan showing long-term impact",
+      "Scalability or replicability potential"
+    ],
+    "common_mistakes": [
+      "Vague or unmeasurable objectives",
+      "Weak problem statement without evidence",
+      "Training for existing role skills (not NEW capacity)",
+      "Poorly documented trainer qualifications",
+      "Budget without clear justification",
+      "Missing EDIA considerations (15% of score)",
+      "No sustainability plan",
+      "Applying for ineligible activities (conferences, duplicate training)"
+    ]
+  },
+  "notes": {
+    "application_access": "Requires LaMPSS registration at https://lampss.novascotia.ca/forms/ofa/Q5WL0P",
+    "no_updates_after_submission": "Cannot update application after submission - must be complete and accurate before submitting",
+    "competitive_assessment": "Not all proposals funded - scored competitively, minimum threshold determined by submission quality and available funding",
+    "decision_timeline": "Not specified in guidelines - assessment duration varies",
+    "intake_windows": "Twice per year (April and October)",
+    "next_deadline": "October 2025 intake closed - next intake April 2026 (dates TBD)"
+  }
+}
